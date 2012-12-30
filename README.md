@@ -19,7 +19,14 @@ On your status site or blog site (hopefully independent of your service!), put u
       "availability": "up|partial|down", // default: down
       "urls": "url pattern (regex) of affected services, possibly an array",
       "starts_at": "UTC timestamp", // required
-      "ends_at": "UTC timestamp" // if not given, can assume 1 hour
+      "ends_at": "UTC timestamp", // if not given, can assume 1 hour
+      "updated_at": "UTC timestamp",
+      "log": [ // optional, possible while repair is going on
+        { 
+           "timestamp": "UTC timestamp",
+           "description": "text or HTML info about current repair status, etc"
+        } // etc
+      ]
     }
     // moar
   ]
@@ -34,6 +41,8 @@ Here are some use cases for this:
   indicating any upcoming downtime in your calendar or notify you by email or OS X notification.
 * When your app uses an API the provides downtime information, you can possibly 
   queue calls to that API for later if there currently is downtime.
+* Inform you far in advance when an older API version is scheduled to be EOL'd.
+* While unexpected downtime occurs, keep you informed of the current status.
 
 I very much welcome any input and discussion on this. Ideally, we could have a site where
 you can subscribe to the downtime info of various sites, and get it as RSS/iCal/push notification/whatever else we come up with.
