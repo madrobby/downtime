@@ -1,14 +1,21 @@
 <!DOCTYPE html>
+<!-- Example status page! -->
 <html>
-<head> 
+<head>
   <title>Status page demo</title>
+  <style>
+    div.event {
+      background: #f0f0f0;
+      padding: 5px;
+    }
+  </style>
 </head>
 <body>
-  <h1>Status page demo</h1>
-  
   <div id="status">
     Loading...
   </div>
+  
+  <p class="footer">Powered by <a href="http://github.com/madrobby/downtime">downtime</a>.</p>
   
   <script src="downtime.js"></script>
   <script>
@@ -20,16 +27,32 @@
     
     // extremly simple and primitive example follows :)
     downtime('example.json', function(data){
-      var i, event, status = document.getElementById('status')
-      status.innerHTML = ''
-      function emit(html){ status.innerHTML += html }
+      var i, event, html = '', status = document.getElementById('status')
+      function emit(string){ html += string }
       
-      for(i=0;i<data.downtime.length;i++) {
-        event = data.downtime[i]
+      function renderEvent(event){
+        emit('<div class=event>')
         emit(t('<h2>{title}</h2><p><i>{starts_at}</i> {description}</p>', event))
         if(event.info_url) emit(t('<p><a href="{info_url}">Read more</a></p>', event))
         if(event.urls && event.urls.length>0) emit('<p>Affected URLs: '+event.urls.join(', ')+'</p>')
+        emit('</div>')
       }
+      
+      emit(t('<h1>{service} status</h1>', data))
+      
+      emit('<h2>Ongoing</h2>')
+      if (data.ongoing.length == 0) emit('<p>No ongoing events, everything is peachy.</p>')
+      for(i=0;i<data.ongoing.length;i++) renderEvent(data.ongoing[i])
+      
+      emit('<h2>Upcoming</h2>')
+      if (data.future.length == 0) emit('<p>No planned events.</p>')
+      for(i=0;i<data.future.length;i++) renderEvent(data.future[i])
+      
+      emit('<h3>Past</h3>')
+      if (data.past.length == 0) emit('<p>No past events.</p>')
+      for(i=0;i<data.past.length;i++) renderEvent(data.past[i])
+      
+      status.innerHTML = html
     })
   </script>
 </body>
