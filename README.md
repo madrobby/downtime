@@ -49,6 +49,7 @@ Here are some use cases for this:
 Examples in the wild
 
 * Freckle http://letsfreckle.com/downtime.json
+* DNSimple https://dnsimple.com/downtime.json
 
 If you provide downtime information, add your service to `services.json` so we and others can implement apps to fetch downtime information and provide useful services based on it.
 
