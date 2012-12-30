@@ -48,6 +48,8 @@ Examples in the wild
 
 * Freckle http://letsfreckle.com/downtime.json
 
+If you provide downtime information, add your service to `services.json` so we and others can implement apps to fetch downtime information and provide useful services based on it.
+
 I very much welcome any input and discussion on this. Ideally, we could have a site where
 you can subscribe to the downtime info of various sites, and get it as RSS/iCal/push notification/whatever else we come up with.
 
