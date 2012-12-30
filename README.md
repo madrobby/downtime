@@ -44,6 +44,10 @@ Here are some use cases for this:
 * Inform you far in advance when an older API version is scheduled to be EOL'd.
 * While unexpected downtime occurs, keep you informed of the current status.
 
+Examples in the wild
+
+* Freckle http://letsfreckle.com/downtime.json
+
 I very much welcome any input and discussion on this. Ideally, we could have a site where
 you can subscribe to the downtime info of various sites, and get it as RSS/iCal/push notification/whatever else we come up with.
 
