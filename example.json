@@ -1,0 +1,15 @@
+{
+  "service": "DNSimple",
+  "url": "https://dnsimple.com",
+  "downtime": [ 
+    {
+      "title": "System upgrade",
+      "description": "We will be taking the DNSimple application offline to upgrade the database and application environment. DNS service will not be affected, however you will be unable to make changes to your records during this time.",
+      "info_url": "http://blog.dnsimple.com/planned-system-maintanence-7-jan-2013/",
+      "urls": ["https://dnsimple.com"],
+      "starts_at": "2013-01-07T06:00:00Z",
+      "ends_at": "2013-01-07T07:00:00Z",
+      "log": []
+    }
+  ]
+}

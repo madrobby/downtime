@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <title>Status page demo</title>
+</head>
+<body>
+  <h1>Status page demo</h1>
+  
+  <div id="status">
+    Loading...
+  </div>
+  
+  <script src="downtime.js"></script>
+  <script>
+    // http://mir.aculo.us/2011/03/09/little-helpers-a-tweet-sized-javascript-templating-engine/
+    function t(s,d){
+      for(var p in d) s=s.replace(new RegExp('{'+p+'}','g'), d[p])
+      return s
+    }
+    
+    // extremly simple and primitive example follows :)
+    downtime('example.json', function(data){
+      var i, status = document.getElementById('status')
+      status.innerHTML = ''
+      function emit(html){ status.innerHTML += html }
+      
+      for(i=0;i<data.downtime.length;i++)
+         emit(t('<h2>{title}</h2><p><i>{starts_at}</i> {description}</p>',data.downtime[i]))
+    })
+  </script>
+</body>
+</html>
