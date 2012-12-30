@@ -1,7 +1,17 @@
 {
   "service": "DNSimple",
   "url": "https://dnsimple.com",
-  "downtime": [ 
+  "downtime": [
+    {
+      "title": "Availability issues due to apocalypse",
+      "description": "Due to unforeseen circumstances the world ended. We're working on a fix.",
+      "urls": ["all"],
+      "type": "unscheduled",
+      "availability": "down",
+      "starts_at": "2012-12-21T00:00:00Z", 
+      "ends_at": "2999-12-31T23:59:39Z",
+      "log": []
+    },
     {
       "title": "System upgrade",
       "description": "We will be taking the DNSimple application offline to upgrade the database and application environment. DNS service will not be affected, however you will be unable to make changes to your records during this time.",

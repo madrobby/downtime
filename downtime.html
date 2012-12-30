@@ -4,9 +4,65 @@
 <head>
   <title>Status page demo</title>
   <style>
+    html {
+      min-height: 100%;
+    }
+    body {
+      -webkit-text-size-adjust: none;
+      margin: 0;
+      background: #333;
+      background: -webkit-gradient(radial, center top, 0, center top, 600, color-stop(0, #2A2E30), color-stop(1, #111414));
+      background: -webkit-radial-gradient(center top, circle closest-corner, #2A2E30, #111414);
+      background: -moz-radial-gradient(center top, circle closest-corner, #2A2E30, #111414);
+      background: -ms-radial-gradient(center top, circle closest-corner, #2A2E30, #111414);
+      background: -o-radial-gradient(center top, circle closest-corner, #2A2E30, #111414);
+      background: radial-gradient(center top, circle closest-corner, #2A2E30, #111414);
+      color: #fff;
+      font: 15px/20px Helvetica, Arial;
+      min-height: 100%;
+    }
+    #status {
+      max-width: 700px;
+      margin:0 auto;
+    }
+    a {
+      color: #fff026;
+    }
+    div.ongoing {
+      padding: 5px 15px;
+      margin-bottom: 15px;
+    }
+    div.ongoing.problems {
+      background: rgba(255,0,0,0.5);
+    }
+    div.upcoming {
+      padding: 5px 0px;
+      font-size: 90%;
+      line-height: 110%;
+    }
+    div.past {
+      margin-top: 40px;
+      font-size: 80%;
+      line-height: 90%;
+      opacity: 0.7;
+    }
     div.event {
-      background: #f0f0f0;
-      padding: 5px;
+      background: rgba(255,255,255,0.1);
+      padding: 5px 15px;
+    }
+    div.event h3 {
+      font-size: 120%;
+      line-height: 150%;
+      margin: 5px 0;
+    }
+    div.event p {
+      margin: 0 0 10px;
+    }
+    p.footer {
+      max-width: 700px;
+      margin:0 auto;
+      font-size: 11px;
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -32,7 +88,7 @@
       
       function renderEvent(event){
         emit('<div class=event>')
-        emit(t('<h2>{title}</h2><p><i>{starts_at}</i> {description}</p>', event))
+        emit(t('<h3>{title} ({type})</h3><p><i>{starts_at}</i> {description}</p>', event))
         if(event.info_url) emit(t('<p><a href="{info_url}">Read more</a></p>', event))
         if(event.urls && event.urls.length>0) emit('<p>Affected URLs: '+event.urls.join(', ')+'</p>')
         emit('</div>')
@@ -40,17 +96,23 @@
       
       emit(t('<h1>{service} status</h1>', data))
       
-      emit('<h2>Ongoing</h2>')
-      if (data.ongoing.length == 0) emit('<p>No ongoing events, everything is peachy.</p>')
-      for(i=0;i<data.ongoing.length;i++) renderEvent(data.ongoing[i])
-      
-      emit('<h2>Upcoming</h2>')
+      if (data.ongoing.length == 0) {
+        emit('<div class="ongoing no-problems"><p>Nothing is going on! Everything is peachy.</p></div>')
+      } else {
+        emit('<div class="ongoing problems"><h2>Ongoing</h2>')
+        for(i=0;i<data.ongoing.length;i++) renderEvent(data.ongoing[i])
+        emit('</div>')
+      }
+         
+      emit('<div class="upcoming"><h2>Upcoming</h2>')
       if (data.future.length == 0) emit('<p>No planned events.</p>')
       for(i=0;i<data.future.length;i++) renderEvent(data.future[i])
+      emit('</div>')
       
-      emit('<h3>Past</h3>')
+      emit('<div class="past"><h3>Past events</h3>')
       if (data.past.length == 0) emit('<p>No past events.</p>')
       for(i=0;i<data.past.length;i++) renderEvent(data.past[i])
+      emit('</div>')
       
       status.innerHTML = html
     })
