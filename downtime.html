@@ -20,12 +20,16 @@
     
     // extremly simple and primitive example follows :)
     downtime('example.json', function(data){
-      var i, status = document.getElementById('status')
+      var i, event, status = document.getElementById('status')
       status.innerHTML = ''
       function emit(html){ status.innerHTML += html }
       
-      for(i=0;i<data.downtime.length;i++)
-         emit(t('<h2>{title}</h2><p><i>{starts_at}</i> {description}</p>',data.downtime[i]))
+      for(i=0;i<data.downtime.length;i++) {
+        event = data.downtime[i]
+        emit(t('<h2>{title}</h2><p><i>{starts_at}</i> {description}</p>', event))
+        if(event.info_url) emit(t('<p><a href="{info_url}">Read more</a></p>', event))
+        if(event.urls && event.urls.length>0) emit('<p>Affected URLs: '+event.urls.join(', ')+'</p>')
+      }
     })
   </script>
 </body>
