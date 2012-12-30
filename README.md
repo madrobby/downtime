@@ -6,14 +6,14 @@ Standardized JSON API to indicate downtime and EOL for apps and services.
 
 On your status site or blog site (hopefully independent of your service!), put up a JSON file. To make the URL to this guessable, the file should be located at `/downtime.json`.
 
-```json
+```javascript
 {
   "service": "My awesome application",
   "url": "http://my.awesome.application/",
   "downtime": [
     {
       "title": "Server maintenance",
-      "description": "optional description of what is going on",
+      "description": "text or HTML (?), optional description of what is going on",
       "info_url": "optional url of a blog post, etc",
       "type": "scheduled|unscheduled|eol", // default: scheduled
       "availability": "up|partial|down", // default: down
@@ -21,7 +21,7 @@ On your status site or blog site (hopefully independent of your service!), put u
       "starts_at": "UTC timestamp", // required
       "ends_at": "UTC timestamp", // if not given, can assume 1 hour
       "updated_at": "UTC timestamp",
-      "log": [ // optional, possible while repair is going on
+      "log": [ // optional, useful to indicate status while repair is going on
         { 
            "timestamp": "UTC timestamp",
            "description": "text or HTML info about current repair status, etc"
@@ -31,6 +31,8 @@ On your status site or blog site (hopefully independent of your service!), put u
     // moar
   ]
 }
+
+// note: actual JSON doesn't support comments
 ```
 
 The file shouldn't contain events in the past (current time > `ends_at`).
