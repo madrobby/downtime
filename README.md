@@ -4,7 +4,7 @@ downtime
 Standardized JSON API to indicate downtime and EOL for apps and services.
 
 
-On your status site or blog site (hopefully independent of your service!), put up a JSON file. To make the URL to this guessable, the file should be located at `/downtime`.
+On your status site or blog site (hopefully independent of your service!), put up a JSON file. To make the URL to this guessable, the file should be located at `/downtime.json`.
 
 ```json
 {
