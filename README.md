@@ -60,6 +60,20 @@ Examples in the wild
 
 If you provide downtime information, add your service to `services.json` so we and others can implement apps to fetch downtime information and provide useful services based on it.
 
+Project goals
+-------------
+
+* As simple as possible, with a file that can be hand-edited. When you have a downtime,
+  you don't have time to mess around with complicated systems.
+* Use good defaults and don't use stuff that is academic. Keep it real-world, fast
+  and most importantly simple. 
+* A single text file should contain all information for your app or service
+* Be able to easily use the information for a status site for your app or service,
+  with a template that has zero external references or requirements (except for JavaScript
+  being enabled), and works in as many browsers as possible. Just HTML & the JSON data.  
+* Create a free and OSS service that provides a combined HTML view and an iCalendar feed
+  for services you use (so you can put planned maintenance windows in your calendar!)
+
 Todos
 -----
 
