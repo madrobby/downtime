@@ -1,6 +1,7 @@
 {
   "service": "DNSimple",
   "url": "https://dnsimple.com",
+  "updated_at": "2012-12-31T00:45:00Z",
   "downtime": [
     {
       "title": "Availability issues due to apocalypse",
@@ -9,7 +10,6 @@
       "type": "unscheduled",
       "availability": "down",
       "starts_at": "2012-12-21T00:00:00Z", 
-      "ends_at": "2999-12-31T23:59:39Z",
       "log": []
     },
     {
@@ -19,6 +19,15 @@
       "urls": ["https://dnsimple.com"],
       "starts_at": "2013-01-07T06:00:00Z",
       "ends_at": "2013-01-07T07:00:00Z",
+      "log": []
+    },
+    {
+      "title": "System upgrade",
+      "description": "We will be taking the DNSimple application offline to upgrade the database and application environment. DNS service will not be affected, however you will be unable to make changes to your records during this time.",
+      "info_url": "http://blog.dnsimple.com/planned-system-maintanence-7-jan-2013/",
+      "urls": ["https://dnsimple.com"],
+      "starts_at": "2012-01-07T06:00:00Z",
+      "ends_at": "2012-01-07T07:00:00Z",
       "log": []
     }
   ]

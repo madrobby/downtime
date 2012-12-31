@@ -17,9 +17,9 @@
   function normalize(){
     events(function(event){
       event.starts_at = parseDate(event.starts_at)
-      event.ends_at = 'ends_at' in event ? parseDate(event.ends_at) : event.starts_at + 3600;
-      event.ongoing = event.starts_at < now && event.ends_at > now
-      event.past = event.ends_at < now
+      event.ends_at = 'ends_at' in event ? parseDate(event.ends_at) : undefined
+      event.ongoing = event.starts_at < now && (!event.ends_at || (event.ends_at && event.ends_at > now))
+      event.past = event.ends_at && event.ends_at < now
       event.future = event.starts_at > now
       if(!('type' in event)) event.type = 'scheduled'
     })

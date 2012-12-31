@@ -32,9 +32,12 @@ On your status site or blog site (hopefully independent of your service!), put u
       "info_url": "optional url of a blog post, etc",
       "type": "scheduled|unscheduled", // default: scheduled
       "availability": "up|partial|down", // default: down
-      "urls": "url pattern (regex) of affected services, possibly an array",
+      "urls": [
+        "url pattern (regex) of affected service"
+        // can be more than one
+      ],
       "starts_at": "ISO8601 UTC timestamp", // required
-      "ends_at": "ISO8601 UTC timestamp", // if not given, can assume 1 hour
+      "ends_at": "ISO8601 UTC timestamp", // if not given assume open-ended
       "updated_at": "ISO8601 UTC timestamp",
       "log": [ // optional, useful to indicate status while repair is going on
         { 

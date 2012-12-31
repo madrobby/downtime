@@ -28,6 +28,14 @@
     a {
       color: #fff026;
     }
+    h1 {
+      font-size: 32px;
+      line-height: 40px;
+    }
+    h1 span.updated-at {
+      font-size: 11px;
+      float:right;
+    }
     div.ongoing {
       padding: 5px 15px;
       margin-bottom: 15px;
@@ -38,12 +46,12 @@
     div.upcoming {
       padding: 5px 0px;
       font-size: 90%;
-      line-height: 110%;
+      line-height: 130%;
     }
     div.past {
       margin-top: 40px;
       font-size: 80%;
-      line-height: 90%;
+      line-height: 120%;
       opacity: 0.7;
     }
     div.event {
@@ -71,7 +79,9 @@
     Loading...
   </div>
   
-  <p class="footer">Powered by <a href="http://github.com/madrobby/downtime">downtime</a>.</p>
+  <p class="footer">
+    All dates and times given in your local time. Powered by <a href="http://github.com/madrobby/downtime">downtime</a>.
+  </p>
   
   <script src="downtime.js"></script>
   <script>
@@ -81,20 +91,69 @@
       return s
     }
     
+    function distanceInWords(date) {
+      var now = new Date, diff = Math.abs(now.getTime()/1000-date.getTime()/1000), 
+        dayDiff = ~~(diff/86400), ago = date<now, distance,
+        templ = ago ? '{distance} ago' : 'in {distance}'
+        
+      console.log(now, date, diff, dayDiff)
+    
+      if (dayDiff >= 31)
+        distance = 'more than a month'
+    
+      distance = distance || dayDiff == 0 && (
+          diff < 60 && "seconds" ||
+          diff < 120 && "1 minute" ||
+          diff < 3600 && Math.floor( diff / 60 ) + " minutes" ||
+          diff < 7200 && "1 hour" ||
+          diff < 86400 && Math.floor( diff / 3600 ) + " hours") ||
+        dayDiff == 1 && "1 day" ||
+        dayDiff < 7 && dayDiff + " days" ||
+        dayDiff < 14 && "1 week" ||
+        dayDiff < 31 && Math.ceil( dayDiff / 7 ) + " weeks"
+        
+      return t(templ,{ distance: distance })
+    }
+    
+    function parseDate(iso8601){
+      var k
+      return (k=iso8601.match(/([0-9]{4})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2}).*Z$/)) ? new Date(Date.UTC(k[1],k[2]-1,k[3],k[4],k[5],k[6])) : iso8601
+    }
+    
+    if (!Date.prototype.toISOString) {
+      Date.prototype.toISOString = function() {
+        function pad(n) { return n < 10 ? '0' + n : n }
+        return this.getUTCFullYear() + '-'
+          + pad(this.getUTCMonth() + 1) + '-'
+          + pad(this.getUTCDate()) + 'T'
+          + pad(this.getUTCHours()) + ':'
+          + pad(this.getUTCMinutes()) + ':'
+          + pad(this.getUTCSeconds()) + 'Z';
+      };
+    }
+    
     // extremly simple and primitive example follows :)
     downtime('example.json', function(data){
       var i, event, html = '', status = document.getElementById('status')
       function emit(string){ html += string }
       
       function renderEvent(event){
+        var now = new Date, distance = ''
+        distance += (now>event.starts_at ? 'Started ' : 'Starts ')+
+          event.starts_at.toLocaleString()+' (<abbr class=date data-date='+event.starts_at.toISOString()+'></abbr>)<br>'
+        if (event.ends_at)
+          distance += (now>event.ends_at ? 'Ended ' : 'Ends ')+
+            event.ends_at.toLocaleString()+' (<abbr class=date data-date='+event.ends_at.toISOString()+'></abbr>)<br>'
+        event.distance = distance
         emit('<div class=event>')
-        emit(t('<h3>{title} ({type})</h3><p><i>{starts_at}</i> {description}</p>', event))
+        emit(t('<h3>{title} ({type})</h3><p>{distance}</p><p>{description}</p>', event))
         if(event.info_url) emit(t('<p><a href="{info_url}">Read more</a></p>', event))
         if(event.urls && event.urls.length>0) emit('<p>Affected URLs: '+event.urls.join(', ')+'</p>')
         emit('</div>')
       }
       
-      emit(t('<h1>{service} status</h1>', data))
+      data.lastUpdated = 
+      emit(t('<h1>{service} status <span class=updated-at>updated <abbr data-date={updated_at}></abbr></span></h1>', data))
       
       if (data.ongoing.length == 0) {
         emit('<div class="ongoing no-problems"><p>Nothing is going on! Everything is peachy.</p></div>')
@@ -115,6 +174,18 @@
       emit('</div>')
       
       status.innerHTML = html
+      
+      function updateDates(){
+        var i, dates = document.getElementsByTagName('abbr')
+        for(i=0;i<dates.length;i++){
+          console.log(dates[i])
+          dates[i].innerHTML = distanceInWords(parseDate(dates[i].getAttribute('data-date')))
+        }        
+      }
+      
+      updateDates()
+      
+      setInterval(updateDates, 1000)
     })
   </script>
 </body>
