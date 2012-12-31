@@ -1,22 +1,38 @@
 downtime
 ========
 
-downtime is a standardized JSON API to list current and upcoming downtime for apps and services,
-both scheduled and unscheduled.
+downtime is a standardized JSON API that lists recent, current and upcoming periods of
+maintenance or downtime for apps and services, both scheduled and unscheduled.
 
-Wait, what? Here's why this would be cool thing:
+Wait, what? Here's why this is a cool thing:
 
-* A tool that periodically checks downtime information for services you use,
-  indicating any upcoming downtime in your calendar or notify you by email or OS X notification.
-* When your app uses an API the provides downtime information, you can possibly 
+For you:
+* Use the machine-readable format to easily convert into calendar events, so you'll
+  see all upcoming downtime of services you use in your calendar.
+* Easily editable because it's JSON. No XML wrestling, or weird formats like iCalendar
+  that don't really fit the purpose.
+
+For your apps:
+* When your app uses an API that provides downtime information, you could
   queue calls to that API for later if there currently is downtime.
-* Inform you far in advance when an older API version is scheduled to be EOL'd.
-* While unexpected downtime occurs, keep you informed of the current status.
+* While unexpected downtime occurs, keep you informed of the current status,
+  which in case you connect to an API you can show to your users. For example,
+  if you use Freckle's API in your app, and Freckle is down for maintenance, you
+  can let your users know about that directly in your app—avoiding extra support
+  costs and useless debugging.
+* Whip up a html page in your apps backend that shows downtime information for all the
+  3rd-party apps you use, on one page!
 
 File format
 -----------
 
-On your status site or blog site (hopefully independent of your service!), put up a JSON file. To make the URL to this guessable, the file should be located at `/downtime.json`.
+On your status site or blog site (hopefully independent of your service!), 
+put up a JSON file.
+
+To make the URL to this guessable, the file should be located at `/downtime.json`
+(this is highly recommended but not a strict requirement).
+
+The file must be a valid JSON file adhering to the following format:
 
 ```javascript
 {
@@ -52,8 +68,14 @@ On your status site or blog site (hopefully independent of your service!), put u
 
 // note: actual JSON doesn't support comments
 ```
+When you create or generate this file, try to stick to these rules of thumb as well:
+* Use ISO8601 timestamps in the UTC timezone only to avoid confusion
+* Keep descriptions short and to the point. Remember that non-technical people should be able
+  to understand them as well.
+* The file shouldn't contain events far in the past (maybe keep info for 1-2 months, but no longer).
+* If you don't know an "ends_at" time, take an educated guess. Keep the time updated if it takes longer.
 
-The file shouldn't contain events far in the past (maybe keep info for 1-2 months, but no longer).
+**This format is not final, and open to discussion. Please contribute in the issues.**
 
 Examples in the wild
 --------------------
@@ -61,16 +83,21 @@ Examples in the wild
 * Freckle http://letsfreckle.com/downtime.json
 * DNSimple https://dnsimple.com/downtime.json
 
-If you provide downtime information, add your service to `services.json` so we and others can implement apps to fetch downtime information and provide useful services based on it.
+If you provide downtime information, add your service to `services.json` 
+so we and others can implement apps that fetch downtime information and 
+provide useful services based on it.
+
+This repository comes with a `downtime.js` and `downtime.html` example file that shows
+how you could use your `downtime.json` file to show a status page. **This example is a
+work in progress.**
 
 Project goals
 -------------
 
-* As simple as possible, with a file that can be hand-edited. When you have a downtime,
-  you don't have time to mess around with complicated systems.
-* Use good defaults and don't use stuff that is academic. Keep it real-world, fast
+* As simple as possible, with a single file that can be hand-edited as well as generated. 
+  When you experience downtime, you don't have time to mess around with complicated syntax.
+* Use good defaults and don't use stuff that is academic. Keep it real-world, fast,
   and most importantly simple. 
-* A single text file should contain all information for your app or service
 * Be able to easily use the information for a status site for your app or service,
   with a template that has zero external references or requirements (except for JavaScript
   being enabled), and works in as many browsers as possible. Just HTML & the JSON data.  
@@ -80,19 +107,22 @@ Project goals
 Todos
 -----
 
-* Finish HTML example and make it more robust
-* More comprehensive API for downtime.js to more easily do your own downtime pages
-* Add a public site that allows you to subscribe to sets of downtime-enabled sites,
+* Finish HTML example and make it more robust.
+* More comprehensive API for downtime.js to more easily do your own downtime pages.
+* Create a downtime Ruby gem that can read and generate the JSON file, and can convert it 
+  into an iCalendar feed
+* A public site that allows you to subscribe to sets of downtime-enabled sites,
   viewing them all at once and in at least HTML, JSON and iCalendar formats.
 
 Hey, it's alpha—contribute!
 ---------------------------
 
-I very much welcome any input and discussion on this. Ideally, we could have a site where
-you can subscribe to the downtime info of various sites, and get it as RSS/iCal/push notification/whatever else we come up with.
+I very much welcome any input and discussion on this. 
 
-Blah
-----
+My vague goal is to have a site where you can subscribe to the downtime info of various apps, 
+and get it as RSS/iCal/push notifications.
 
-This idea/site is licensed under the terms of the MIT license.
-(c) 2012 Thomas Fuchs
+License
+-------
+
+downtime is licensed under the terms of the MIT license. (c) 2012 Thomas Fuchs
